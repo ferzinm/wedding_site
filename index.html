@@ -25,23 +25,23 @@
             overflow-x: hidden;
         }
         body {
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            visibility: hidden; /* Скрываем содержимое страницы */
         }
         body.loaded {
-            opacity: 1;
+            visibility: visible; /* Показываем содержимое после загрузки */
         }
         #preloader {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             background-color: #000;
             z-index: 9999;
-            display: flex !important;
+            display: flex;
             justify-content: center;
             align-items: center;
+            visibility: visible; /* Прелоадер всегда видимый */
         }
         .spinner {
             width: 50px;

@@ -1,44 +1,51 @@
 const token_bot = '7479848735:AAHytBRAUsDrbF8CzJHVRYTqXKVrSddnqx8';
 
-// Немедленно показываем прелоадер и скрываем контент
-(function() {
-    // Сначала гарантируем, что прелоадер отображается
+// Выполняем сразу, чтобы убедиться, что прелоадер отображается
+document.addEventListener('DOMContentLoaded', function() {
+    // Принудительно показываем прелоадер
     const preloader = document.getElementById('preloader');
     if (preloader) {
+        preloader.style.visibility = 'visible';
         preloader.style.display = 'flex';
-        preloader.style.opacity = '1';
     }
     
-    // Скрываем контент до полной загрузки
-    document.documentElement.style.visibility = 'visible';
-})();
+    // Обработчик для случая, если страница загрузится слишком быстро
+    if (document.readyState === 'complete') {
+        setTimeout(hidePreloader, 500);
+    }
+});
 
 // Функция для скрытия прелоадера
 function hidePreloader() {
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        // Анимируем исчезновение прелоадера
-        preloader.style.transition = 'opacity 0.3s ease';
+        // Скрываем прелоадер
         preloader.style.opacity = '0';
+        preloader.style.transition = 'opacity 0.3s ease';
         
-        // После анимации скрываем его полностью и показываем контент
+        // После анимации полностью убираем его
         setTimeout(() => {
             preloader.style.display = 'none';
+            preloader.style.visibility = 'hidden';
+            
+            // Показываем содержимое сайта
             document.body.classList.add('loaded');
         }, 300);
     }
 }
 
-// Дожидаемся полной загрузки страницы
+// Скрываем прелоадер после загрузки страницы
 window.addEventListener('load', function() {
-    // Дополнительная задержка для гарантии отображения прелоадера
-    // и предотвращения белого экрана
-    setTimeout(hidePreloader, 500);
+    // Даем небольшую задержку, чтобы убедиться, что пользователь 
+    // увидел прелоадер
+    setTimeout(hidePreloader, 300);
 });
 
-// Страховка - если окно загружалось более 5 секунд, принудительно скрыть прелоадер
+// Страховка - если страница не загрузилась полностью за 5 секунд,
+// скрываем прелоадер принудительно
 setTimeout(function() {
-    if (document.getElementById('preloader').style.opacity !== '0') {
+    if (document.getElementById('preloader') && 
+        getComputedStyle(document.getElementById('preloader')).visibility !== 'hidden') {
         hidePreloader();
     }
 }, 5000);
