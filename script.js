@@ -384,21 +384,19 @@ document.addEventListener('DOMContentLoaded', function() {
             let firstErrorElement = null;
             
             // Проверяем текстовые поля
-            const requiredInputs = rsvpForm.querySelectorAll('input[required], textarea[required]');
+            const requiredInputs = rsvpForm.querySelectorAll('input[type="text"][required], textarea[required]');
             requiredInputs.forEach(input => {
                 const group = input.closest('.form-group');
                 
-                if (input.type === 'text' || input.type === 'textarea') {
-                    if (!input.value.trim()) {
-                        group.classList.add('error');
-                        hasErrors = true;
-                        
-                        if (!firstErrorElement) {
-                            firstErrorElement = input;
-                        }
-                    } else {
-                        group.classList.remove('error');
+                if (!input.value.trim()) {
+                    group.classList.add('error');
+                    hasErrors = true;
+                    
+                    if (!firstErrorElement) {
+                        firstErrorElement = input;
                     }
+                } else {
+                    group.classList.remove('error');
                 }
             });
             
@@ -407,27 +405,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const requiredRadios = rsvpForm.querySelectorAll('input[type="radio"][required]');
             
             requiredRadios.forEach(radio => {
-                if (!radioGroups[radio.name]) {
-                    radioGroups[radio.name] = [];
-                }
-                radioGroups[radio.name].push(radio);
-            });
-            
-            for (const [name, radios] of Object.entries(radioGroups)) {
-                const group = radios[0].closest('.form-group');
-                const checked = rsvpForm.querySelector(`input[name="${name}"]:checked`);
-                
-                if (!checked) {
-                    group.classList.add('error');
-                    hasErrors = true;
+                const name = radio.name;
+                if (!radioGroups[name]) {
+                    radioGroups[name] = true;
                     
-                    if (!firstErrorElement) {
-                        firstErrorElement = radios[0];
+                    // Проверяем, выбрана ли хотя бы одна радио-кнопка в группе
+                    const group = radio.closest('.form-group');
+                    const checked = rsvpForm.querySelector(`input[name="${name}"]:checked`);
+                    
+                    if (!checked) {
+                        group.classList.add('error');
+                        hasErrors = true;
+                        
+                        if (!firstErrorElement) {
+                            firstErrorElement = radio;
+                        }
+                    } else {
+                        group.classList.remove('error');
                     }
-                } else {
-                    group.classList.remove('error');
                 }
-            }
+            });
             
             // Если есть ошибки, останавливаем отправку и фокусируемся на первом поле с ошибкой
             if (hasErrors) {
@@ -442,10 +439,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         behavior: 'smooth'
                     });
                     
-                    // Устанавливаем фокус на первое поле с ошибкой
-                    setTimeout(() => {
-                        firstErrorElement.focus();
-                    }, 500);
+                    // Устанавливаем фокус на первое поле с ошибкой, если это возможно
+                    try {
+                        setTimeout(() => {
+                            firstErrorElement.focus();
+                        }, 500);
+                    } catch (error) {
+                        console.log('Не удалось установить фокус на элемент:', error);
+                        // Альтернативный вариант - просто прокрутить к форме
+                        document.getElementById('rsvpForm').scrollIntoView({ behavior: 'smooth' });
+                    }
                 }
                 
                 return false;

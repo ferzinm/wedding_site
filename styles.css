@@ -2800,3 +2800,32 @@ textarea {
     font-weight: 500;
     transition: all 0.3s ease;
 }
+
+/* Улучшенные стили для ошибок в форме */
+.form-group.error .radio-group {
+    border: 2px solid #ff0000 !important;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: rgba(255, 0, 0, 0.05);
+    position: relative;
+}
+
+.form-group.error .radio-group::before {
+    content: "Выберите один из вариантов";
+    display: block;
+    color: #ff0000;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    animation: shake 0.5s ease;
+}
+
+.form-group.error .fancy-radio {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
