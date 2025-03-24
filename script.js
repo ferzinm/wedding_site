@@ -213,9 +213,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const coverContent = document.querySelector('.cover-content');
         
         if (coverContent) {
-            // Более плавное движение с небольшим коэффициентом
-            const parallaxValue = scrollPos * 0.15;
-            coverContent.style.transform = `translateY(${parallaxValue}px)`;
+            // Только если элемент находится в зоне видимости
+            const coverSection = document.querySelector('.cover');
+            if (coverSection && isElementInViewport(coverSection)) {
+                // Более плавное движение с небольшим коэффициентом
+                const parallaxValue = scrollPos * 0.15;
+                coverContent.style.transform = `translateY(${parallaxValue}px)`;
+            }
         }
         
         // Анимации для плавающих элементов с плавным движением
@@ -231,9 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.setAttribute('data-direction', direction);
             }
             
-            // Более плавное движение с меньшим коэффициентом
-            const translateX = scrollPos * speed * direction;
-            item.style.transform = `translateY(${translateX}px)`;
+            // Ограничиваем анимацию только элементами, видимыми в области просмотра
+            const parent = item.closest('section');
+            if (parent && isElementInViewport(parent)) {
+                // Более плавное движение с меньшим коэффициентом
+                const translateX = scrollPos * speed * direction;
+                item.style.transform = `translateY(${translateX}px)`;
+            }
         });
         
         ticking = false;
@@ -790,6 +798,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Очищаем существующие звезды
         starrySky.innerHTML = '';
         
+        // Устанавливаем стиль контейнера звезд - фиксированное позиционирование для Safari
+        starrySky.style.position = 'fixed';
+        starrySky.style.top = '0';
+        starrySky.style.left = '0';
+        starrySky.style.width = '100%';
+        starrySky.style.height = '100%';
+        starrySky.style.pointerEvents = 'none'; // Чтобы звезды не перехватывали события
+        
         // Создаем звезды различных размеров
         const starCount = 50; // Большее количество звезд для красивого эффекта
         
@@ -845,9 +861,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const coverContent = document.querySelector('.cover-content');
         
         if (coverContent) {
-            // Более плавное движение с небольшим коэффициентом
-            const parallaxValue = scrollPos * 0.15;
-            coverContent.style.transform = `translateY(${parallaxValue}px)`;
+            // Только если элемент находится в зоне видимости
+            const coverSection = document.querySelector('.cover');
+            if (coverSection && isElementInViewport(coverSection)) {
+                // Более плавное движение с небольшим коэффициентом
+                const parallaxValue = scrollPos * 0.15;
+                coverContent.style.transform = `translateY(${parallaxValue}px)`;
+            }
         }
         
         // Анимации для плавающих элементов с плавным движением
@@ -863,9 +883,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.setAttribute('data-direction', direction);
             }
             
-            // Более плавное движение с меньшим коэффициентом
-            const translateX = scrollPos * speed * direction;
-            item.style.transform = `translateY(${translateX}px)`;
+            // Ограничиваем анимацию только элементами, видимыми в области просмотра
+            const parent = item.closest('section');
+            if (parent && isElementInViewport(parent)) {
+                // Более плавное движение с меньшим коэффициентом
+                const translateX = scrollPos * speed * direction;
+                item.style.transform = `translateY(${translateX}px)`;
+            }
         });
         
         ticking = false;
