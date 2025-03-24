@@ -293,17 +293,17 @@
                 <form class="rsvp-form" id="rsvpForm">
                     <div class="form-group">
                         <label for="name" style="text-align: left;"><i class="fas fa-user"></i> Имя и фамилия</label>
-                        <input type="text" id="name" name="name" required placeholder="Как вас зовут?">
+                        <input type="text" id="name" name="name" required placeholder="Как вас зовут?" autocomplete="name">
                     </div>
                     
                     <div class="form-group">
-                        <label style="text-align: left;"><i class="fas fa-calendar-check"></i> Будете ли Вы присутствовать на первом дне торжества?</label>
+                        <label for="day1-yes" style="text-align: left;"><i class="fas fa-calendar-check"></i> Будете ли Вы присутствовать на первом дне торжества?</label>
                         <div class="radio-group">
-                            <label class="fancy-radio">
+                            <label class="fancy-radio" for="day1-yes">
                                 <input type="radio" id="day1-yes" name="day1" value="yes">
                                 <span class="radio-btn"></span> Да, с радостью буду
                             </label>
-                            <label class="fancy-radio">
+                            <label class="fancy-radio" for="day1-no">
                                 <input type="radio" id="day1-no" name="day1" value="no">
                                 <span class="radio-btn"></span> К сожалению, не смогу
                             </label>
@@ -312,13 +312,13 @@
                     </div>
                     
                     <div class="form-group">
-                        <label style="text-align: left;"><i class="fas fa-calendar-check"></i> Будете ли Вы присутствовать на втором дне торжества?</label>
+                        <label for="day2-yes" style="text-align: left;"><i class="fas fa-calendar-check"></i> Будете ли Вы присутствовать на втором дне торжества?</label>
                         <div class="radio-group">
-                            <label class="fancy-radio">
+                            <label class="fancy-radio" for="day2-yes">
                                 <input type="radio" id="day2-yes" name="day2" value="yes">
                                 <span class="radio-btn"></span> Да, с радостью буду
                             </label>
-                            <label class="fancy-radio">
+                            <label class="fancy-radio" for="day2-no">
                                 <input type="radio" id="day2-no" name="day2" value="no">
                                 <span class="radio-btn"></span> К сожалению, не смогу
                             </label>
@@ -327,34 +327,34 @@
                     </div>
                     
                     <div class="form-group">
-                        <label style="text-align: left;"><i class="fas fa-glass-martini-alt"></i> Предпочтения по напиткам:</label>
+                        <label for="drinks-red-wine" style="text-align: left;"><i class="fas fa-glass-martini-alt"></i> Предпочтения по напиткам:</label>
                         <div class="checkbox-group">
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="drinks" value="red-wine">
+                            <label class="fancy-checkbox" for="drinks-red-wine">
+                                <input type="checkbox" id="drinks-red-wine" name="drinks" value="red-wine">
                                 <span class="checkbox-btn"></span> Вино красное
                             </label>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="drinks" value="white-wine">
+                            <label class="fancy-checkbox" for="drinks-white-wine">
+                                <input type="checkbox" id="drinks-white-wine" name="drinks" value="white-wine">
                                 <span class="checkbox-btn"></span> Вино белое
                             </label>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="drinks" value="vodka">
+                            <label class="fancy-checkbox" for="drinks-vodka">
+                                <input type="checkbox" id="drinks-vodka" name="drinks" value="vodka">
                                 <span class="checkbox-btn"></span> Водка
                             </label>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="drinks" value="cognac">
+                            <label class="fancy-checkbox" for="drinks-cognac">
+                                <input type="checkbox" id="drinks-cognac" name="drinks" value="cognac">
                                 <span class="checkbox-btn"></span> Коньяк
                             </label>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="drinks" value="whiskey">
+                            <label class="fancy-checkbox" for="drinks-whiskey">
+                                <input type="checkbox" id="drinks-whiskey" name="drinks" value="whiskey">
                                 <span class="checkbox-btn"></span> Виски
                             </label>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="drinks" value="champagne">
+                            <label class="fancy-checkbox" for="drinks-champagne">
+                                <input type="checkbox" id="drinks-champagne" name="drinks" value="champagne">
                                 <span class="checkbox-btn"></span> Шампанское
                             </label>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="drinks" value="non-alcoholic">
+                            <label class="fancy-checkbox" for="drinks-non-alcoholic">
+                                <input type="checkbox" id="drinks-non-alcoholic" name="drinks" value="non-alcoholic">
                                 <span class="checkbox-btn"></span> Безалкогольные напитки
                             </label>
                         </div>
@@ -362,44 +362,44 @@
                     
                     
                     <div class="form-group">
-                        <label style="text-align: left;"><i class="fas fa-utensils"></i> Ограничения в еде</label>
+                        <label for="food-none" style="text-align: left;"><i class="fas fa-utensils"></i> Ограничения в еде</label>
                         <div class="radio-group">
-                            <label class="fancy-radio">
-                                <input type="radio" name="food-restrictions" value="none">
+                            <label class="fancy-radio" for="food-none">
+                                <input type="radio" id="food-none" name="food-restrictions" value="none">
                                 <span class="radio-btn"></span> Нет ограничений
                             </label>
-                            <label class="fancy-radio">
-                                <input type="radio" name="food-restrictions" value="no-meat">
+                            <label class="fancy-radio" for="food-no-meat">
+                                <input type="radio" id="food-no-meat" name="food-restrictions" value="no-meat">
                                 <span class="radio-btn"></span> Не употребляю мясо
                             </label>
-                            <label class="fancy-radio">
-                                <input type="radio" name="food-restrictions" value="vegan">
+                            <label class="fancy-radio" for="food-vegan">
+                                <input type="radio" id="food-vegan" name="food-restrictions" value="vegan">
                                 <span class="radio-btn"></span> Веган
                             </label>
-                            <label class="fancy-radio">
-                                <input type="radio" name="food-restrictions" value="lactose">
+                            <label class="fancy-radio" for="food-lactose">
+                                <input type="radio" id="food-lactose" name="food-restrictions" value="lactose">
                                 <span class="radio-btn"></span> Непереносимость лактозы
                             </label>
-                            <label class="fancy-radio">
-                                <input type="radio" name="food-restrictions" value="gluten">
+                            <label class="fancy-radio" for="food-gluten">
+                                <input type="radio" id="food-gluten" name="food-restrictions" value="gluten">
                                 <span class="radio-btn"></span> Непереносимость глютена
                             </label>
-                            <label class="fancy-radio">
-                                <input type="radio" name="food-restrictions" value="other">
+                            <label class="fancy-radio" for="food-other">
+                                <input type="radio" id="food-other" name="food-restrictions" value="other">
                                 <span class="radio-btn"></span> Другое
-                                <input type="text" name="other-restrictions" class="other-input" placeholder="Опишите ограничения">
+                                <input type="text" id="other-restrictions" name="other-restrictions" class="other-input" placeholder="Опишите ограничения" autocomplete="off">
                             </label>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="allergies"><i class="fas fa-exclamation-triangle"></i> Аллергии для учёта в меню</label>
-                        <input type="text" id="allergies" name="allergies" placeholder="Если есть, укажите здесь">
+                        <input type="text" id="allergies" name="allergies" placeholder="Если есть, укажите здесь" autocomplete="off">
                     </div>
 
                     <div class="form-group">
                         <label for="comments" style="text-align: left;"><i class="fas fa-comment"></i> Дополнительный комментарий</label>
-                        <textarea id="comments" name="comments" placeholder="Что-то ещё, что мы должны знать?"></textarea>
+                        <textarea id="comments" name="comments" placeholder="Что-то ещё, что мы должны знать?" autocomplete="off"></textarea>
                     </div>
                     
                     <button type="submit" class="btn submit-btn">Отправить <i class="fas fa-paper-plane"></i></button>
