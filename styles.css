@@ -2803,29 +2803,27 @@ textarea {
 
 /* Улучшенные стили для ошибок в форме */
 .form-group.error .radio-group {
-    border: 2px solid #ff0000 !important;
+    border: 1px solid #ff0000;
     border-radius: 8px;
     padding: 8px;
     background-color: rgba(255, 0, 0, 0.05);
-    position: relative;
 }
 
-.form-group.error .radio-group::before {
-    content: "Выберите один из вариантов";
-    display: block;
+/* Упрощенный стиль сообщения об ошибке */
+.error-message {
     color: #ff0000;
-    font-size: 0.8rem;
     margin-top: 5px;
-    margin-bottom: 10px;
-    animation: shake 0.5s ease;
+    font-size: 14px;
+    display: none;
 }
 
-.form-group.error .fancy-radio {
-    animation: pulse 1s infinite;
+.form-group.error .error-message {
+    display: block;
+    animation: fadeIn 0.3s ease;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.8; }
-    50% { opacity: 1; }
-    100% { opacity: 0.8; }
+/* Анимация для сообщения об ошибке */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }

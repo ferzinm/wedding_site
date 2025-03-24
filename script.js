@@ -440,7 +440,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Прокрутка к первому невалидному полю
                 if (isValid === false) {
-                    document.getElementById('day1-yes').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Прокручиваем к группе, а не к самой радио-кнопке
+                    day1Group.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Лучше установить фокус с задержкой, чтобы прокрутка успела завершиться
+                    setTimeout(() => {
+                        try {
+                            // Устанавливаем фокус на первую радио-кнопку в группе
+                            document.getElementById('day1-yes').focus();
+                            // Добавляем стиль, подсвечивающий элемент при фокусе
+                            day1Group.classList.add('focused');
+                        } catch (e) {
+                            console.error('Не удалось установить фокус:', e);
+                        }
+                    }, 700);
+                    
                     isValid = null;
                 }
             } else {
@@ -454,9 +468,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (day2Error) day2Error.style.display = 'block';
                 isValid = isValid === true ? false : isValid;
                 
-                // Прокрутка к первому невалидному полю
+                // Прокрутка только если это первое поле с ошибкой
                 if (isValid === false) {
-                    document.getElementById('day2-yes').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Прокручиваем к группе, а не к самой радио-кнопке
+                    day2Group.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Устанавливаем фокус с задержкой
+                    setTimeout(() => {
+                        try {
+                            // Устанавливаем фокус на первую радио-кнопку в группе
+                            document.getElementById('day2-yes').focus();
+                            // Добавляем стиль, подсвечивающий элемент при фокусе
+                            day2Group.classList.add('focused');
+                        } catch (e) {
+                            console.error('Не удалось установить фокус:', e);
+                        }
+                    }, 700);
+                    
                     isValid = null;
                 }
             } else {
