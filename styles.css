@@ -2742,3 +2742,61 @@ textarea {
 .non-padding {
     padding: 0;
 }
+
+/* Стили для фокуса на полях */
+.form-group input:focus,
+.form-group textarea:focus,
+.fancy-radio input:focus + .radio-btn,
+.fancy-checkbox input:focus + .checkbox-btn {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.form-group.focused {
+    transform: translateX(10px);
+    background-color: rgba(0, 0, 0, 0.02);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+/* Тултипы для обязательных полей */
+.form-group.error label:after {
+    content: "Пожалуйста, заполните это поле";
+    display: block;
+    color: #d9534f;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    animation: fadeIn 0.3s ease;
+    padding: 5px 10px;
+    background-color: rgba(217, 83, 79, 0.1);
+    border-radius: 4px;
+}
+
+.form-group.error input,
+.form-group.error .radio-group,
+.form-group.error .checkbox-group {
+    border: 1px solid #d9534f;
+    background-color: rgba(217, 83, 79, 0.05);
+    transition: all 0.3s ease;
+}
+
+/* Анимация для тултипов */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Стили для подсвечивания при фокусе */
+.radio-group:focus-within,
+.checkbox-group:focus-within {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Стили для активного поля ввода */
+.form-group.active label {
+    color: #000;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}

@@ -326,8 +326,130 @@ document.addEventListener('DOMContentLoaded', function() {
     const rsvpForm = document.getElementById('rsvpForm');
     
     if (rsvpForm) {
+        // Обработка фокуса на полях формы
+        const formGroups = rsvpForm.querySelectorAll('.form-group');
+        
+        formGroups.forEach(group => {
+            const inputs = group.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                // Фокус на поле
+                input.addEventListener('focus', function() {
+                    // Добавляем класс для подсветки текущей группы
+                    group.classList.add('focused');
+                    group.classList.add('active');
+                    
+                    // Убираем класс ошибки при фокусе
+                    group.classList.remove('error');
+                });
+                
+                // Потеря фокуса
+                input.addEventListener('blur', function() {
+                    group.classList.remove('focused');
+                    
+                    // Если поле пустое и обязательное, показываем ошибку
+                    if (this.required && !this.value.trim()) {
+                        group.classList.add('error');
+                    }
+                });
+            });
+            
+            // Обработка радио-кнопок
+            const radios = group.querySelectorAll('input[type="radio"]');
+            if (radios.length > 0) {
+                radios.forEach(radio => {
+                    radio.addEventListener('focus', function() {
+                        group.classList.add('focused');
+                        group.classList.add('active');
+                        group.classList.remove('error');
+                    });
+                    
+                    radio.addEventListener('blur', function() {
+                        group.classList.remove('focused');
+                        
+                        // Проверяем, выбрана ли хотя бы одна радио-кнопка
+                        const name = this.name;
+                        const checked = group.querySelector(`input[name="${name}"]:checked`);
+                        
+                        if (!checked && this.required) {
+                            group.classList.add('error');
+                        }
+                    });
+                });
+            }
+        });
+        
+        // Проверка формы перед отправкой
         rsvpForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            let hasErrors = false;
+            let firstErrorElement = null;
+            
+            // Проверяем текстовые поля
+            const requiredInputs = rsvpForm.querySelectorAll('input[required], textarea[required]');
+            requiredInputs.forEach(input => {
+                const group = input.closest('.form-group');
+                
+                if (input.type === 'text' || input.type === 'textarea') {
+                    if (!input.value.trim()) {
+                        group.classList.add('error');
+                        hasErrors = true;
+                        
+                        if (!firstErrorElement) {
+                            firstErrorElement = input;
+                        }
+                    } else {
+                        group.classList.remove('error');
+                    }
+                }
+            });
+            
+            // Проверяем радио-кнопки
+            const radioGroups = {};
+            const requiredRadios = rsvpForm.querySelectorAll('input[type="radio"][required]');
+            
+            requiredRadios.forEach(radio => {
+                if (!radioGroups[radio.name]) {
+                    radioGroups[radio.name] = [];
+                }
+                radioGroups[radio.name].push(radio);
+            });
+            
+            for (const [name, radios] of Object.entries(radioGroups)) {
+                const group = radios[0].closest('.form-group');
+                const checked = rsvpForm.querySelector(`input[name="${name}"]:checked`);
+                
+                if (!checked) {
+                    group.classList.add('error');
+                    hasErrors = true;
+                    
+                    if (!firstErrorElement) {
+                        firstErrorElement = radios[0];
+                    }
+                } else {
+                    group.classList.remove('error');
+                }
+            }
+            
+            // Если есть ошибки, останавливаем отправку и фокусируемся на первом поле с ошибкой
+            if (hasErrors) {
+                e.preventDefault();
+                
+                if (firstErrorElement) {
+                    // Плавная прокрутка к первому полю с ошибкой
+                    const offset = firstErrorElement.closest('.form-group').offsetTop - 100;
+                    
+                    window.scrollTo({
+                        top: offset,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Устанавливаем фокус на первое поле с ошибкой
+                    setTimeout(() => {
+                        firstErrorElement.focus();
+                    }, 500);
+                }
+                
+                return false;
+            }
             
             // Анимация кнопки
             const submitBtn = rsvpForm.querySelector('.submit-btn');
@@ -506,19 +628,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         submitBtn.style.backgroundColor = '';
                     }, 500);
                 }, 3000);
-            });
-        });
-        
-        // Анимация полей формы при фокусе
-        const formInputs = rsvpForm.querySelectorAll('input[type="text"], textarea');
-        
-        formInputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentNode.style.transform = 'translateX(10px)';
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentNode.style.transform = 'translateX(0)';
             });
         });
     }
