@@ -4,12 +4,19 @@ const token_bot = '7479848735:AAHytBRAUsDrbF8CzJHVRYTqXKVrSddnqx8';
 function hidePreloader() {
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        preloader.style.opacity = '0';
-        preloader.style.transition = 'opacity 0.5s ease';
+        // Увеличиваем время перехода для более плавного исчезновения
+        preloader.style.transition = 'opacity 1s ease';
+        
+        // Задержка перед началом скрытия прелоадера
         setTimeout(() => {
-            preloader.style.display = 'none';
-            document.body.classList.add('loaded');
-        }, 500);
+            preloader.style.opacity = '0';
+            
+            // Увеличиваем время до полного удаления прелоадера
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                document.body.classList.add('loaded');
+            }, 1000); // Ждем пока завершится анимация исчезновения
+        }, 800); // Дополнительная задержка перед началом скрытия
     }
 }
 
@@ -144,8 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Скрываем прелоадер после полной загрузки страницы
 window.addEventListener('load', () => {
-    // Небольшая задержка для гарантии загрузки всех ресурсов
-    setTimeout(hidePreloader, 300);
+    // Увеличиваем задержку перед скрытием прелоадера
+    setTimeout(hidePreloader, 1000);
 });
 
 // Плавная прокрутка
