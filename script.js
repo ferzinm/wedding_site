@@ -28,8 +28,12 @@ function hidePreloader() {
             preloader.style.display = 'none';
             preloader.style.visibility = 'hidden';
             
-            // Показываем содержимое сайта
+            // Показываем содержимое сайта с анимацией
             document.body.classList.add('loaded');
+            
+            // Плавный переход от черного к белому фону
+            document.documentElement.style.transition = 'background-color 0.5s ease';
+            document.documentElement.style.backgroundColor = '#fff';
         }, 300);
     }
 }

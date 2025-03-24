@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" style="background-color: #000; margin: 0; padding: 0;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
     <meta property="og:image" content="img/couple.jpg">
     <meta property="og:url" content="https://alexander-polina-wedding.com">
     <meta property="og:type" content="website">
-    <meta name="theme-color" content="#A98D76">
+    <meta name="theme-color" content="#000000">
     <link rel="icon" href="img/favicon.ico">
     <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
     <title>Свадьба Александра и Полины</title>
@@ -23,12 +23,16 @@
             padding: 0;
             width: 100%;
             overflow-x: hidden;
+            background-color: #000;
         }
         body {
             visibility: hidden; /* Скрываем содержимое страницы */
+            background-color: #000;
         }
         body.loaded {
             visibility: visible; /* Показываем содержимое после загрузки */
+            background-color: #fff;
+            transition: background-color 0.3s ease;
         }
         #preloader {
             position: fixed;
