@@ -810,7 +810,7 @@ document.addEventListener('DOMContentLoaded', function() {
             star.style.animationDelay = `${Math.random() * 4}s`;
             
             // Z-index для создания эффекта глубины
-            star.style.zIndex = Math.floor(Math.random() * 3);
+            star.style.zIndex = Math.floor(Math.random() * 3).toString();
             
             // Добавляем звезду на небо
             starrySky.appendChild(star);
