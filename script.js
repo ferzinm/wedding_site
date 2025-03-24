@@ -1,24 +1,47 @@
 const token_bot = '7479848735:AAHytBRAUsDrbF8CzJHVRYTqXKVrSddnqx8';
 
+// Немедленно показываем прелоадер и скрываем контент
+(function() {
+    // Сначала гарантируем, что прелоадер отображается
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.style.display = 'flex';
+        preloader.style.opacity = '1';
+    }
+    
+    // Скрываем контент до полной загрузки
+    document.documentElement.style.visibility = 'visible';
+})();
+
 // Функция для скрытия прелоадера
 function hidePreloader() {
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        // Увеличиваем время перехода для более плавного исчезновения
-        preloader.style.transition = 'opacity 1s ease';
+        // Анимируем исчезновение прелоадера
+        preloader.style.transition = 'opacity 0.3s ease';
+        preloader.style.opacity = '0';
         
-        // Задержка перед началом скрытия прелоадера
+        // После анимации скрываем его полностью и показываем контент
         setTimeout(() => {
-            preloader.style.opacity = '0';
-            
-            // Увеличиваем время до полного удаления прелоадера
-            setTimeout(() => {
-                preloader.style.display = 'none';
-                document.body.classList.add('loaded');
-            }, 1000); // Ждем пока завершится анимация исчезновения
-        }, 800); // Дополнительная задержка перед началом скрытия
+            preloader.style.display = 'none';
+            document.body.classList.add('loaded');
+        }, 300);
     }
 }
+
+// Дожидаемся полной загрузки страницы
+window.addEventListener('load', function() {
+    // Дополнительная задержка для гарантии отображения прелоадера
+    // и предотвращения белого экрана
+    setTimeout(hidePreloader, 500);
+});
+
+// Страховка - если окно загружалось более 5 секунд, принудительно скрыть прелоадер
+setTimeout(function() {
+    if (document.getElementById('preloader').style.opacity !== '0') {
+        hidePreloader();
+    }
+}, 5000);
 
 // Функция инициализации всех анимаций
 function initializeAnimations() {
@@ -147,12 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Запускаем первичную анимацию
     setTimeout(animateOnScroll, 100);
-});
-
-// Скрываем прелоадер после полной загрузки страницы
-window.addEventListener('load', () => {
-    // Увеличиваем задержку перед скрытием прелоадера
-    setTimeout(hidePreloader, 1000);
 });
 
 // Плавная прокрутка
@@ -531,3 +548,5 @@ style.textContent = `
 `;
 
 document.head.appendChild(style);
+
+
