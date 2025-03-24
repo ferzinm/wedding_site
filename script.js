@@ -19,21 +19,31 @@ document.addEventListener('DOMContentLoaded', function() {
 function hidePreloader() {
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        // Скрываем прелоадер
+        // Перед скрытием прелоадера подготавливаем контент
+        document.body.style.backgroundColor = '#000';
+        
+        // Скрываем прелоадер плавно
         preloader.style.opacity = '0';
         preloader.style.transition = 'opacity 0.3s ease';
         
-        // После анимации полностью убираем его
+        // После анимации скрытия прелоадера
         setTimeout(() => {
             preloader.style.display = 'none';
             preloader.style.visibility = 'hidden';
             
-            // Показываем содержимое сайта с анимацией
+            // Контент готов к отображению на черном фоне
             document.body.classList.add('loaded');
             
-            // Плавный переход от черного к белому фону
-            document.documentElement.style.transition = 'background-color 0.5s ease';
-            document.documentElement.style.backgroundColor = '#fff';
+            // Теперь начинаем плавный переход фона от черного к белому
+            // Увеличиваем время перехода
+            document.documentElement.style.transition = 'background-color 0.8s ease';
+            document.body.style.transition = 'background-color 0.8s ease';
+            
+            // После небольшой задержки меняем фон на белый
+            setTimeout(() => {
+                document.documentElement.style.backgroundColor = '#fff';
+                document.body.style.backgroundColor = '#fff';
+            }, 100); // Короткая задержка перед изменением цвета
         }, 300);
     }
 }

@@ -10,14 +10,15 @@ html, body {
     padding: 0;
     width: 100%;
     overflow-x: hidden;
+    background-color: #000;
 }
 
 body {
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
-    color: #333;
-    background: #fff;
+    color: #fff; /* Начинаем с белого текста на черном фоне */
+    background: #000;
     line-height: 1.6;
     min-height: 100vh;
     visibility: hidden; /* Скрываем содержимое до загрузки */
@@ -25,6 +26,8 @@ body {
 
 body.loaded {
     visibility: visible; /* Показываем содержимое после загрузки */
+    color: #333; /* После загрузки меняем цвет текста на темный */
+    transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 .fixed-width {
@@ -73,6 +76,19 @@ body.loaded {
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease, color 0.8s ease;
+}
+
+body.loaded h1, 
+body.loaded h2, 
+body.loaded h3, 
+body.loaded h4, 
+body.loaded h5, 
+body.loaded h6 {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .container {

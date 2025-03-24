@@ -28,11 +28,23 @@
         body {
             visibility: hidden; /* Скрываем содержимое страницы */
             background-color: #000;
+            color: #fff; /* Начинаем с белого текста на черном фоне */
         }
         body.loaded {
             visibility: visible; /* Показываем содержимое после загрузки */
-            background-color: #fff;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.8s ease, color 0.8s ease;
+        }
+        .fixed-width {
+            opacity: 0; /* Начинаем с полностью прозрачного контента */
+            transition: opacity 0.8s ease;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body.loaded .fixed-width {
+            opacity: 1; /* После загрузки делаем контент видимым */
         }
         #preloader {
             position: fixed;
@@ -59,20 +71,18 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .fixed-width {
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            overflow-x: hidden;
-            position: relative;
-        }
         .container {
+            opacity: 0; 
+            transition: opacity 0.8s ease;
             width: 90%;
             max-width: 900px;
             margin: 0 auto;
             padding: 4rem 0;
             position: relative;
             overflow: hidden;
+        }
+        body.loaded .container {
+            opacity: 1;
         }
     </style>
 
