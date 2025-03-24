@@ -1,43 +1,20 @@
 const token_bot = '7479848735:AAHytBRAUsDrbF8CzJHVRYTqXKVrSddnqx8';
-// Плавная прокрутка
-document.addEventListener('DOMContentLoaded', function() {
-    // Скрываем прелоудер после загрузки страницы
+
+// Функция для скрытия прелоадера
+function hidePreloader() {
     const preloader = document.getElementById('preloader');
-    
-    // Показываем прелоудер сразу
     if (preloader) {
-        preloader.style.display = 'flex';
-        preloader.style.opacity = '1';
-        
-        // Скрываем прелоудер после загрузки всего контента
-        window.addEventListener('load', function() {
-            if (preloader) {
-                // Плавно скрываем прелоудер
-                setTimeout(() => {
-                    preloader.style.opacity = '0';
-                    preloader.style.transition = 'opacity 0.5s ease';
-                    
-                    // После завершения анимации скрытия убираем из DOM
-                    setTimeout(() => {
-                        preloader.style.display = 'none';
-                        document.body.classList.add('loaded');
-                    }, 500);
-                }, 300);
-            }
-        });
+        preloader.style.opacity = '0';
+        preloader.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+            preloader.style.display = 'none';
+            document.body.classList.add('loaded');
+        }, 500);
     }
-    
-    // Кнопка на заставке для прокрутки к основному контенту
-    const scrollBtn = document.querySelector('.scroll-btn');
-    const invitationSection = document.getElementById('invitation');
-    
-    if (scrollBtn && invitationSection) {
-        scrollBtn.addEventListener('click', function() {
-            invitationSection.scrollIntoView({ behavior: 'smooth' });
-        });
-    }
-    
-    // Анимации при прокрутке
+}
+
+// Функция инициализации всех анимаций
+function initializeAnimations() {
     const sections = document.querySelectorAll('section:not(.cover)');
     const timelineItems = document.querySelectorAll('.timeline-item');
     const detailCards = document.querySelectorAll('.detail-card');
@@ -50,8 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
     cornerDecors.forEach(corner => {
         const parent = corner.parentElement;
         const rect = parent.getBoundingClientRect();
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
         
         let x = 0, y = 0;
         
@@ -68,24 +43,33 @@ document.addEventListener('DOMContentLoaded', function() {
         corner.style.transform = `translate(${x}px, ${y}px)`;
         corner.style.opacity = '0';
         
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             corner.style.transition = 'transform 1s ease, opacity 1s ease';
             corner.style.transform = 'translate(0, 0)';
             corner.style.opacity = '0.5';
-        }, 500);
+        });
     });
+}
+
+// Функция проверки видимости элемента
+function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+        rect.bottom >= 0
+    );
+}
+
+// Функция анимации при прокрутке
+function animateOnScroll() {
+    const sections = document.querySelectorAll('section:not(.cover)');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const detailCards = document.querySelectorAll('.detail-card');
+    const formGroups = document.querySelectorAll('.form-group');
+    const animateTexts = document.querySelectorAll('.animate-text');
+    const sectionDecorations = document.querySelectorAll('.section-decoration');
     
-    // Функция проверки видимости элемента в области просмотра
-    function isElementInViewport(el) {
-        const rect = el.getBoundingClientRect();
-        return (
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
-            rect.bottom >= 0
-        );
-    }
-    
-    // Функция для анимации элементов при прокрутке
-    function animateOnScroll() {
+    requestAnimationFrame(() => {
         // Анимация секций
         sections.forEach(section => {
             if (isElementInViewport(section)) {
@@ -120,30 +104,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Анимация элементов таймлайна
         timelineItems.forEach((item, index) => {
             if (isElementInViewport(item)) {
-                // Добавляем задержку для каждого элемента
                 setTimeout(() => {
                     item.classList.add('visible');
                 }, index * 150);
             }
         });
         
-        // Анимация карточек деталей
+        // Анимация карточек
         detailCards.forEach((card, index) => {
             if (isElementInViewport(card)) {
                 setTimeout(() => {
                     card.classList.add('visible');
-                    const accent = card.querySelector('.card-accent');
-                    if (accent) {
-                        setTimeout(() => {
-                            accent.style.opacity = '0.1';
-                            accent.style.transform = 'scale(1)';
-                        }, 300);
-                    }
                 }, index * 150);
             }
         });
         
-        // Анимация полей формы
+        // Анимация групп формы
         formGroups.forEach((group, index) => {
             if (isElementInViewport(group)) {
                 setTimeout(() => {
@@ -151,13 +127,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, index * 100);
             }
         });
-    }
+    });
+}
+
+// Инициализация после загрузки DOM
+document.addEventListener('DOMContentLoaded', () => {
+    // Инициализируем анимации
+    initializeAnimations();
     
-    // Запускаем анимацию при загрузке страницы
+    // Настраиваем обработчики прокрутки
+    window.addEventListener('scroll', animateOnScroll, { passive: true });
+    
+    // Запускаем первичную анимацию
     setTimeout(animateOnScroll, 100);
+});
+
+// Скрываем прелоадер после полной загрузки страницы
+window.addEventListener('load', () => {
+    // Небольшая задержка для гарантии загрузки всех ресурсов
+    setTimeout(hidePreloader, 300);
+});
+
+// Плавная прокрутка
+document.addEventListener('DOMContentLoaded', function() {
+    // Кнопка на заставке для прокрутки к основному контенту
+    const scrollBtn = document.querySelector('.scroll-btn');
+    const invitationSection = document.getElementById('invitation');
     
-    // Запускаем анимацию при прокрутке
-    window.addEventListener('scroll', animateOnScroll);
+    if (scrollBtn && invitationSection) {
+        scrollBtn.addEventListener('click', function() {
+            invitationSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
     
     // Добавим параллакс-эффект для некоторых секций
     window.addEventListener('scroll', function() {
