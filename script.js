@@ -326,141 +326,159 @@ document.addEventListener('DOMContentLoaded', function() {
     const rsvpForm = document.getElementById('rsvpForm');
     
     if (rsvpForm) {
-        // Обработка фокуса на полях формы
+        // Визуальные эффекты для полей формы
         const formGroups = rsvpForm.querySelectorAll('.form-group');
         
         formGroups.forEach(group => {
-            const inputs = group.querySelectorAll('input, textarea');
+            const inputs = group.querySelectorAll('input[type="text"], textarea');
+            const radios = group.querySelectorAll('input[type="radio"]');
+            const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+            const errorMessage = group.querySelector('.error-message');
+            
+            // Обработка текстовых полей
             inputs.forEach(input => {
-                // Фокус на поле
-                input.addEventListener('focus', function() {
-                    // Добавляем класс для подсветки текущей группы
+                input.addEventListener('focus', () => {
                     group.classList.add('focused');
-                    group.classList.add('active');
-                    
-                    // Убираем класс ошибки при фокусе
-                    group.classList.remove('error');
+                    if (errorMessage) errorMessage.style.display = 'none';
                 });
                 
-                // Потеря фокуса
-                input.addEventListener('blur', function() {
+                input.addEventListener('blur', () => {
                     group.classList.remove('focused');
-                    
-                    // Если поле пустое и обязательное, показываем ошибку
-                    if (this.required && !this.value.trim()) {
+                    if (input.hasAttribute('required') && !input.value.trim()) {
                         group.classList.add('error');
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    } else {
+                        group.classList.remove('error');
+                    }
+                });
+                
+                // Анимация при вводе
+                input.addEventListener('input', () => {
+                    if (input.value.trim()) {
+                        group.classList.add('active');
+                    } else {
+                        group.classList.remove('active');
                     }
                 });
             });
             
             // Обработка радио-кнопок
-            const radios = group.querySelectorAll('input[type="radio"]');
             if (radios.length > 0) {
+                const name = radios[0].name;
+                
                 radios.forEach(radio => {
-                    radio.addEventListener('focus', function() {
-                        group.classList.add('focused');
-                        group.classList.add('active');
+                    radio.addEventListener('change', () => {
                         group.classList.remove('error');
+                        if (errorMessage) errorMessage.style.display = 'none';
                     });
                     
-                    radio.addEventListener('blur', function() {
+                    radio.addEventListener('focus', () => {
+                        group.classList.add('focused');
+                    });
+                    
+                    radio.addEventListener('blur', () => {
                         group.classList.remove('focused');
-                        
-                        // Проверяем, выбрана ли хотя бы одна радио-кнопка
-                        const name = this.name;
-                        const checked = group.querySelector(`input[name="${name}"]:checked`);
-                        
-                        if (!checked && this.required) {
-                            group.classList.add('error');
-                        }
                     });
                 });
             }
+            
+            // Обработка чекбоксов
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('focus', () => {
+                    group.classList.add('focused');
+                });
+                
+                checkbox.addEventListener('blur', () => {
+                    group.classList.remove('focused');
+                });
+            });
         });
         
-        // Проверка формы перед отправкой
+        // Валидация формы перед отправкой
         rsvpForm.addEventListener('submit', function(e) {
-            let hasErrors = false;
-            let firstErrorElement = null;
+            e.preventDefault();
+            let isValid = true;
             
-            // Проверяем текстовые поля
-            const requiredInputs = rsvpForm.querySelectorAll('input[type="text"][required], textarea[required]');
-            requiredInputs.forEach(input => {
+            // Проверка текстовых полей
+            const requiredTextInputs = rsvpForm.querySelectorAll('input[type="text"][required], textarea[required]');
+            requiredTextInputs.forEach(input => {
                 const group = input.closest('.form-group');
+                const errorMessage = group.querySelector('.error-message');
                 
                 if (!input.value.trim()) {
                     group.classList.add('error');
-                    hasErrors = true;
+                    if (errorMessage) errorMessage.style.display = 'block';
+                    isValid = false;
                     
-                    if (!firstErrorElement) {
-                        firstErrorElement = input;
+                    // Прокрутка к первому невалидному полю
+                    if (isValid === false) {
+                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => input.focus(), 500);
+                        isValid = null; // Чтобы прокрутка была только к первому полю
                     }
                 } else {
                     group.classList.remove('error');
+                    if (errorMessage) errorMessage.style.display = 'none';
                 }
             });
             
-            // Проверяем радио-кнопки
-            const radioGroups = {};
-            const requiredRadios = rsvpForm.querySelectorAll('input[type="radio"][required]');
+            // Проверка радио-групп (день 1 и день 2)
+            const day1Selected = rsvpForm.querySelector('input[name="day1"]:checked');
+            const day2Selected = rsvpForm.querySelector('input[name="day2"]:checked');
             
-            requiredRadios.forEach(radio => {
-                const name = radio.name;
-                if (!radioGroups[name]) {
-                    radioGroups[name] = true;
-                    
-                    // Проверяем, выбрана ли хотя бы одна радио-кнопка в группе
-                    const group = radio.closest('.form-group');
-                    const checked = rsvpForm.querySelector(`input[name="${name}"]:checked`);
-                    
-                    if (!checked) {
-                        group.classList.add('error');
-                        hasErrors = true;
-                        
-                        if (!firstErrorElement) {
-                            firstErrorElement = radio;
-                        }
-                    } else {
-                        group.classList.remove('error');
-                    }
-                }
-            });
+            const day1Group = rsvpForm.querySelector('input[name="day1"]').closest('.form-group');
+            const day2Group = rsvpForm.querySelector('input[name="day2"]').closest('.form-group');
             
-            // Если есть ошибки, останавливаем отправку и фокусируемся на первом поле с ошибкой
-            if (hasErrors) {
-                e.preventDefault();
+            const day1Error = day1Group.querySelector('.error-message');
+            const day2Error = day2Group.querySelector('.error-message');
+            
+            // Проверка дня 1
+            if (!day1Selected) {
+                day1Group.classList.add('error');
+                if (day1Error) day1Error.style.display = 'block';
+                isValid = isValid === true ? false : isValid;
                 
-                if (firstErrorElement) {
-                    // Плавная прокрутка к первому полю с ошибкой
-                    const offset = firstErrorElement.closest('.form-group').offsetTop - 100;
-                    
-                    window.scrollTo({
-                        top: offset,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Устанавливаем фокус на первое поле с ошибкой, если это возможно
-                    try {
-                        setTimeout(() => {
-                            firstErrorElement.focus();
-                        }, 500);
-                    } catch (error) {
-                        console.log('Не удалось установить фокус на элемент:', error);
-                        // Альтернативный вариант - просто прокрутить к форме
-                        document.getElementById('rsvpForm').scrollIntoView({ behavior: 'smooth' });
-                    }
+                // Прокрутка к первому невалидному полю
+                if (isValid === false) {
+                    document.getElementById('day1-yes').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    isValid = null;
                 }
-                
-                return false;
+            } else {
+                day1Group.classList.remove('error');
+                if (day1Error) day1Error.style.display = 'none';
             }
             
+            // Проверка дня 2
+            if (!day2Selected) {
+                day2Group.classList.add('error');
+                if (day2Error) day2Error.style.display = 'block';
+                isValid = isValid === true ? false : isValid;
+                
+                // Прокрутка к первому невалидному полю
+                if (isValid === false) {
+                    document.getElementById('day2-yes').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    isValid = null;
+                }
+            } else {
+                day2Group.classList.remove('error');
+                if (day2Error) day2Error.style.display = 'none';
+            }
+            
+            if (isValid === true) {
+                // Форма валидна, продолжаем отправку
+                submitForm(this);
+            }
+        });
+        
+        // Функция отправки формы
+        function submitForm(form) {
             // Анимация кнопки
-            const submitBtn = rsvpForm.querySelector('.submit-btn');
+            const submitBtn = form.querySelector('.submit-btn');
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
             
             // Собираем данные формы
-            const formData = new FormData(rsvpForm);
+            const formData = new FormData(form);
             const formDataObj = {};
             formData.forEach((value, key) => {
                 if (formDataObj[key]) {
@@ -579,7 +597,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.appendChild(successMessage);
                 
                 // Очищаем форму
-                rsvpForm.reset();
+                form.reset();
                 
                 // Удаляем сообщение через 3 секунды
                 setTimeout(() => {
@@ -632,22 +650,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 500);
                 }, 3000);
             });
-        });
-    }
-    
-    // Обработка радио-кнопки "Другое" для ограничений в еде
-    const otherRadio = document.querySelector('input[value="other"]');
-    const otherInput = document.querySelector('.other-input');
-    
-    if (otherRadio && otherInput) {
-        otherInput.style.display = 'none';
+        }
         
-        otherRadio.addEventListener('change', function() {
-            otherInput.style.display = this.checked ? 'block' : 'none';
-            if (this.checked) {
-                otherInput.focus();
-            }
-        });
+        // Обработка радио-кнопки "Другое" для ограничений в еде
+        const otherRadio = document.querySelector('input[value="other"]');
+        const otherInput = document.querySelector('.other-input');
+        
+        if (otherRadio && otherInput) {
+            otherInput.style.display = 'none';
+            
+            otherRadio.addEventListener('change', function() {
+                otherInput.style.display = this.checked ? 'block' : 'none';
+                if (this.checked) {
+                    otherInput.focus();
+                }
+            });
+        }
     }
 });
 
