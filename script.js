@@ -805,6 +805,7 @@ document.addEventListener('DOMContentLoaded', function() {
         starrySky.style.width = '100%';
         starrySky.style.height = '100%';
         starrySky.style.pointerEvents = 'none'; // Чтобы звезды не перехватывали события
+        starrySky.style.zIndex = '1'; // Убедимся, что звезды под контентом
         
         // Создаем звезды различных размеров
         const starCount = 50; // Большее количество звезд для красивого эффекта
@@ -818,15 +819,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             star.className = `star ${sizeClass}`;
             
-            // Случайное положение
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.left = `${Math.random() * 100}%`;
+            // Фиксированное положение для каждой звезды
+            const top = Math.random() * 100;
+            const left = Math.random() * 100;
+            star.style.top = `${top}%`;
+            star.style.left = `${left}%`;
             
             // Случайная задержка для несинхронного мерцания
             star.style.animationDelay = `${Math.random() * 4}s`;
-            
-            // Z-index для создания эффекта глубины
-            star.style.zIndex = Math.floor(Math.random() * 3).toString();
             
             // Добавляем звезду на небо
             starrySky.appendChild(star);
@@ -899,7 +899,6 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScrollPosition = window.pageYOffset;
         
         if (!ticking) {
-            // Используем requestAnimationFrame для синхронизации с циклом отрисовки
             window.requestAnimationFrame(function() {
                 updateParallax(lastScrollPosition);
             });
