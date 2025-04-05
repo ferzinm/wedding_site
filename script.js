@@ -798,32 +798,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Очищаем существующие звезды
         starrySky.innerHTML = '';
         
-        // Устанавливаем стиль контейнера звезд - фиксированное позиционирование для Safari
-        starrySky.style.position = 'fixed';
-        starrySky.style.top = '0';
-        starrySky.style.left = '0';
-        starrySky.style.width = '100%';
-        starrySky.style.height = '100%';
-        starrySky.style.pointerEvents = 'none'; // Чтобы звезды не перехватывали события
-        starrySky.style.zIndex = '1'; // Убедимся, что звезды под контентом
-        
         // Создаем звезды различных размеров
-        const starCount = 50; // Большее количество звезд для красивого эффекта
+        const starCount = 50;
         
         for (let i = 0; i < starCount; i++) {
             const star = document.createElement('div');
-            
-            // Случайный размер звезды
-            const sizeClass = Math.random() < 0.5 ? 'small' : 
+            const sizeClass = Math.random() < 0.5 ? 'small' :
                              (Math.random() < 0.8 ? 'medium' : 'large');
-            
             star.className = `star ${sizeClass}`;
             
-            // Фиксированное положение для каждой звезды
-            const top = Math.random() * 100;
-            const left = Math.random() * 100;
-            star.style.top = `${top}%`;
-            star.style.left = `${left}%`;
+            // Фиксированное положение внутри starry-sky
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
             
             // Случайная задержка для несинхронного мерцания
             star.style.animationDelay = `${Math.random() * 4}s`;
@@ -870,7 +856,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Анимации для плавающих элементов с плавным движением
+        // Анимации для плавающих элементов (НЕ звезды)
         const floatingItems = document.querySelectorAll('.floating-item');
         floatingItems.forEach(item => {
             // Уменьшаем скорость для более плавного движения
@@ -899,6 +885,7 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScrollPosition = window.pageYOffset;
         
         if (!ticking) {
+            // Используем requestAnimationFrame для синхронизации с циклом отрисовки
             window.requestAnimationFrame(function() {
                 updateParallax(lastScrollPosition);
             });

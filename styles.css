@@ -236,32 +236,31 @@ section.visible {
 .cover {
     height: 100vh;
     background-color: #000;
-    position: relative;
+    position: relative; /* Убедимся, что cover - это контекст позиционирования */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     opacity: 1;
     transform: none;
-    overflow: hidden;
+    overflow: hidden; /* Важно, чтобы звезды не вылезали за пределы */
 }
 
 /* Звёздное небо */
 .starry-sky {
-    position: fixed;
+    position: absolute; /* Абсолютное позиционирование относительно .cover */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
     pointer-events: none;
-    will-change: transform;
+    will-change: transform; /* Оставляем для оптимизации */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    /* Убираем translateZ(0), т.к. оно может конфликтовать с absolute */
 }
 
 .star {
@@ -272,8 +271,7 @@ section.visible {
     will-change: opacity;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    /* Убираем translateZ(0) */
 }
 
 .star.small {
